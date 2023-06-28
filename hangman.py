@@ -1,3 +1,4 @@
+import random
 lives_ascii = [
     '''
     --------
@@ -90,10 +91,10 @@ lives_ascii = [
     -
 ''']
 
-
-word = 'empanada'
+words = ['empanada', 'flower', 'code', 'watermelon', 'strawberry', 'mango', 'song']
+word = random.choice(words)
 blank_line = []
-# add a guessed list to tell the user when a letter was already guessed
+guessed_words = []
 play_game = True
 lives = 8
 
@@ -105,7 +106,15 @@ print(lives_ascii[0])
 
 while play_game:
     print(f"Lives: {lives}")
+    print(''.join(blank_line))
     guess = input("Guess a letter: ")
+
+    if guess in guessed_words:
+        print(f''' 
+        -------------------------------
+         You already guessed {guess} 👯
+        -------------------------------
+        ''')
 
     for space_idx in range(len(word)):
         letter = word[space_idx]
@@ -113,31 +122,38 @@ while play_game:
         if letter == guess:
             blank_line[space_idx] = letter
 
-    if guess not in word:
+    if guess not in word and guess not in guessed_words:
         lives -= 1
         print('''
           -----------------------------------------
           |  WRONG GUESS. You just lost a life 😭 |
-          ------------------------- ---------------
+          -----------------------------------------
         ''')
 
         print(lives_ascii[len(lives_ascii) - lives - 1])
 
     if lives == 0:
         print('''
-          --------------
-          |  GAME OVER |
-          --------------
+          -----------------
+          |☠️ GAME OVER ☠️|
+          -----------------
         ''')
         play_game = False
 
     if '_' not in blank_line:
         play_game = False
         print('''
-          -------------------------
-          |  YOU WON THE GAME!!!! |
-          -------------------------
+          --------------------------
+          | 🎉 YOU WON THE GAME 🎉 |
+          --------------------------
+        ''')
+    if guess in word and '_' in blank_line:
+        print('''
+          -------------------
+          |  WELL DONE!! 💃 |
+          -------------------
         ''')
 
     print(' '.join(blank_line))
+    guessed_words += guess
 
